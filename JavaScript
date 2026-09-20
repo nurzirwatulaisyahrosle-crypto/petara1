@@ -1,0 +1,106 @@
+let skor = 0;
+let checkpoint = 0;
+let namaMurid = "";
+
+const mulaBtn = document.getElementById("mulaBtn");
+const namaInput = document.getElementById("namaMurid");
+const gameScreen = document.getElementById("game-screen");
+const mainScreen = document.getElementById("main-screen");
+const resultScreen = document.getElementById("result-screen");
+const checkpointTitle = document.getElementById("checkpoint-title");
+const audioText = document.getElementById("audio-text");
+const jawapanContainer = document.getElementById("jawapan-container");
+const feedback = document.getElementById("feedback");
+const nextBtn = document.getElementById("nextBtn");
+const rakamBtn = document.getElementById("rakamBtn");
+
+const checkpoints = [
+  {
+    title: "Checkpoint 1",
+    audio: "Dengar ayat ini: Saya ada seekor ikan. Soalan: Apakah haiwan yang disebut?",
+    jawapan: ["ikan", "burung", "kucing"],
+    betul: "ikan"
+  },
+  {
+    title: "Checkpoint 2",
+    audio: "Arahan: Potong ikan menggunakan pisau.",
+    jawapan: ["pisau", "sudu", "garpu"],
+    betul: "pisau"
+  },
+  {
+    title: "Checkpoint 3",
+    audio: "Soalan: Manusia ada berapa jari?",
+    keyword: "5",
+    type: "stt"
+  }
+];
+
+mulaBtn.addEventListener("click", () => {
+  namaMurid = namaInput.value;
+  if (namaMurid.trim() === "") {
+    alert("Sila isi nama murid!");
+    return;
+  }
+  mainScreen.classList.add("hidden");
+  gameScreen.classList.remove("hidden");
+  loadCheckpoint();
+});
+
+function loadCheckpoint() {
+  if (checkpoint >= checkpoints.length) {
+    tamatGame();
+    return;
+  }
+  const cp = checkpoints[checkpoint];
+  checkpointTitle.textContent = cp.title;
+  audioText.textContent = cp.audio;
+  jawapanContainer.innerHTML = "";
+  feedback.textContent = "";
+  nextBtn.classList.add("hidden");
+  rakamBtn.classList.add("hidden");
+
+  if (cp.type === "stt") {
+    rakamBtn.classList.remove("hidden");
+    rakamBtn.onclick = () => {
+      // Simulasi rakaman suara
+      let jawapanMurid = prompt("Sebut jawapan anda:");
+      if (jawapanMurid.includes(cp.keyword)) {
+        feedback.textContent = "Bagus! Jawapan betul 🎉";
+        skor += 10;
+        nextBtn.classList.remove("hidden");
+      } else {
+        feedback.textContent = "Cuba lagi ya 💪";
+      }
+    };
+  } else {
+    cp.jawapan.forEach(j => {
+      const img = document.createElement("img");
+      img.src = `images/${j}.png`; // letak gambar dalam folder images
+      img.alt = j;
+      img.onclick = () => semakJawapan(j, cp.betul);
+      jawapanContainer.appendChild(img);
+    });
+  }
+}
+
+function semakJawapan(pilihan, betul) {
+  if (pilihan === betul) {
+    feedback.textContent = "Hebat! Awak memang bijak 🎉";
+    skor += 10;
+    nextBtn.classList.remove("hidden");
+  } else {
+    feedback.textContent = "Hmm, cuba dengar sekali lagi 👂";
+  }
+}
+
+nextBtn.addEventListener("click", () => {
+  checkpoint++;
+  loadCheckpoint();
+});
+
+function tamatGame() {
+  gameScreen.classList.add("hidden");
+  resultScreen.classList.remove("hidden");
+  document.getElementById("nama-output").textContent = "Nama Murid: " + namaMurid;
+  document.getElementById("skor-output").textContent = "Skor Akhir: " + skor;
+}
