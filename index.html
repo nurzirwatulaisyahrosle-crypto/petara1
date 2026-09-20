@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8">
+  <title>Kembara PeTara</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="main-screen">
+    <h1>Kembara PeTara</h1>
+    <label for="namaMurid">Masukkan Nama Murid:</label>
+    <input type="text" id="namaMurid" placeholder="Nama anda">
+    <button id="mulaBtn">Mula Permainan</button>
+  </div>
+
+  <div id="game-screen" class="hidden">
+    <h2 id="checkpoint-title">Checkpoint</h2>
+    <p id="audio-text">Audio akan dimainkan di sini...</p>
+    <div id="jawapan-container"></div>
+    <button id="rakamBtn" class="hidden">🎤 Rakam Suara</button>
+    <p id="feedback"></p>
+    <button id="nextBtn" class="hidden">Seterusnya</button>
+  </div>
+
+  <div id="result-screen" class="hidden">
+    <h2>Keputusan Permainan</h2>
+    <p id="nama-output"></p>
+    <p id="skor-output"></p>
+    <button onclick="location.reload()">Main Semula</button>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
